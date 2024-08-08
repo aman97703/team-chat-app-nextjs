@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
 export async function createServerAction(name: string, imageUrl: string) {
-  console.log("hiiii");
   try {
     const user = await getUser();
     console.log(user);
