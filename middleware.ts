@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest) {
     req.nextUrl.pathname.startsWith("/signup") ||
     req.nextUrl.pathname.startsWith("/auth");
 
-  const isVisitingDashboardPage = req.nextUrl.pathname.startsWith("/dashboard");
+  const isVisitingDashboardPage = req.nextUrl.pathname.startsWith("/server");
 
   // If the user is authenticated and trying to access the sign-in page, redirect them
   if (token && isVisitingAuthPage) {

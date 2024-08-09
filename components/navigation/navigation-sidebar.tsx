@@ -25,9 +25,9 @@ const NavigationSidebar = async () => {
     <div className="space-y-4 flex flex-col items-center h-full  text-primary w-full dark:bg-[#1e1f22] py-3">
       <NavigationAction />
       <Separator className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto" />
-      <ScrollArea className="flex-1 w-full gap-4">
+      <ScrollArea className="flex-1 w-full">
         {servers.map((server) => (
-          <div key={server.id}>
+          <div key={server.id} className="mb-4">
             <NatigationItem
               id={server.id}
               imageUrl={server.imageUrl}

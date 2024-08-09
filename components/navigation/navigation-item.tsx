@@ -13,9 +13,6 @@ interface NatigationItemProps {
 
 const NatigationItem = ({ id, imageUrl, name }: NatigationItemProps) => {
   const { serverid } = useParams<{ serverid: string }>();
-  console.log(serverid === id);
-  console.log(serverid);
-  console.log(id);
   const router = useRouter();
   const onClick = () => {
     router.push(`/server/${id}`);
@@ -37,7 +34,7 @@ const NatigationItem = ({ id, imageUrl, name }: NatigationItemProps) => {
             serverid === id && "bg-primary/10 text-primary rounded-[16px]"
           )}
         >
-          <Image fill src={imageUrl} alt="Channel" />
+          <Image fill src={imageUrl} alt="Channel" className="bg-white" />
         </div>
       </button>
     </ActionTooltip>
