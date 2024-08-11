@@ -1,4 +1,5 @@
 import ChatHeader from "@/components/chat/chat-header";
+import ChatInput from "@/components/chat/chat-input";
 import { db } from "@/lib/db";
 import { getUser } from "@/lib/getUser";
 import { redirectToSignIn } from "@/lib/redirectToSignIn";
@@ -39,6 +40,17 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
       <ChatHeader name={channel.name} serverid={serverid} type="channel" />
+      <div className="flex-1">Message</div>
+      <ChatInput
+        name={channel.name}
+        type="channel"
+        apiUrl="/api/socket/messages"
+        query={{
+          channelid: channel.id,
+          serverid: channel.serverId,
+          userid: profile.id,
+        }}
+      />
     </div>
   );
 };
