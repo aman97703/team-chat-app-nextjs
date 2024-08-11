@@ -236,6 +236,62 @@ export async function createChannelAction(
     };
   }
 }
+
+export async function editChannelAction(
+  serverid: string,
+  channelid: string,
+  name: string,
+  type: ChannelType
+) {
+  try {
+    const user = await getUser();
+    if (!user) return null;
+    if (name === "general") {
+      return {
+        success: false,
+        message: "Name can not general",
+      };
+    }
+    const server = await db.server.update({
+      where: {
+        id: serverid,
+        members: {
+          some: {
+            profileId: user.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+            },
+          },
+        },
+      },
+      data: {
+        channels: {
+          update: {
+            where: {
+              id: channelid,
+              name: {
+                not: "general",
+              },
+            },
+            data: {
+              name: name,
+              type: type,
+            },
+          },
+        },
+      },
+    });
+    return {
+      success: true,
+      server: server,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Server error",
+    };
+  }
+}
 export async function leaveChannelAction(serverid: string) {
   try {
     const user = await getUser();
@@ -281,6 +337,45 @@ export async function deleteServerAction(serverid: string) {
       where: {
         id: serverid,
         profileId: user.id,
+      },
+    });
+    return {
+      success: true,
+      server: server,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Server error",
+    };
+  }
+}
+export async function deleteChannelAction(serverid: string, channelid: string) {
+  try {
+    const user = await getUser();
+    if (!user) return null;
+
+    const server = await db.server.update({
+      where: {
+        id: serverid,
+        members: {
+          some: {
+            profileId: user.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+            },
+          },
+        },
+      },
+      data: {
+        channels: {
+          delete: {
+            id: channelid,
+            name: {
+              not: "general",
+            },
+          },
+        },
       },
     });
     return {
