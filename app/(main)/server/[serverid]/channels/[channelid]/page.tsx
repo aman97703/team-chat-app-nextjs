@@ -1,5 +1,6 @@
 import ChatHeader from "@/components/chat/chat-header";
 import ChatInput from "@/components/chat/chat-input";
+import ChatMessages from "@/components/chat/chat-messages";
 import { db } from "@/lib/db";
 import { getUser } from "@/lib/getUser";
 import { redirectToSignIn } from "@/lib/redirectToSignIn";
@@ -40,7 +41,21 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
       <ChatHeader name={channel.name} serverid={serverid} type="channel" />
-      <div className="flex-1">Message</div>
+      <ChatMessages
+        member={member}
+        name={channel.name}
+        type="channel"
+        paramKey="channelid"
+        apiUrl="/api/messages"
+        socketUrl="/api/socket/messages"
+        socketQuery={{
+          channelid: channel.id,
+          serverid: channel.serverId,
+          userid: profile.id,
+        }}
+        chatId={channel.id}
+        paramValue={channel.id}
+      />
       <ChatInput
         name={channel.name}
         type="channel"

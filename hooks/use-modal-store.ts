@@ -8,6 +8,7 @@ export type ModalType =
   | "members"
   | "createChannel"
   | "deleteChannel"
+  | "deleteMessage"
   | "editChannel"
   | "leaverServer"
   | "messagefile"
