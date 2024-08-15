@@ -23,13 +23,6 @@ import { Button } from "@/components/ui/button";
 import { editChannelAction } from "@/lib/actions/actions";
 import { useRouter } from "next/navigation";
 import { useModalStore } from "@/hooks/use-modal-store";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { ChannelType } from "@prisma/client";
 import { useEffect } from "react";
 
@@ -61,7 +54,12 @@ const EditChannelModel = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (server && channel) {
-        await editChannelAction(server.id, channel.id, values.name, values.type);
+        await editChannelAction(
+          server.id,
+          channel.id,
+          values.name,
+          values.type
+        );
         form.reset();
         router.refresh();
         handleClose();
@@ -110,40 +108,6 @@ const EditChannelModel = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Channel Type
-                    </FormLabel>
-                    <Select
-                      disabled={isLoading}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="bg-zinc-300 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none">
-                          <SelectValue placeholder="Select a channel type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {Object.values(ChannelType).map((type) => (
-                          <SelectItem
-                            key={type}
-                            value={type}
-                            className="capitalize"
-                          >
-                            {type.toLowerCase()}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

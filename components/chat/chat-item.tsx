@@ -28,6 +28,7 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { useModalStore } from "@/hooks/use-modal-store";
+import { useRouter, useParams } from "next/navigation";
 
 interface ChatItemProps {
   id: string;
@@ -72,6 +73,8 @@ const ChatItem = ({
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
   const isOwner = currentMember.id === member.id;
+  const params = useParams<{ serverid: string }>();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -84,6 +87,13 @@ const ChatItem = ({
   const canEditMessage = !deleted && isOwner && !fileUrl;
   const isPDF = fileType === "pdf" && fileUrl;
   const isImage = !isPDF && fileUrl;
+
+  const onMemberClick = () => {
+    if (member.id === currentMember.id) {
+      return;
+    }
+    router.push(`/server/${params?.serverid}/conversations/${member.id}`);
+  };
 
   useEffect(() => {
     form.reset({
@@ -106,7 +116,6 @@ const ChatItem = ({
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     try {
-      console.log(value);
       const url = qs.stringifyUrl({
         url: `${socketUrl}/${id}`,
         query: socketQuery,
@@ -124,7 +133,10 @@ const ChatItem = ({
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
       <div className="group flex gap-x-2 items-start w-full">
-        <div className="cursor-pointer hover:drop-shadow-md transition">
+        <div
+          className="cursor-pointer hover:drop-shadow-md transition"
+          onClick={onMemberClick}
+        >
           <UserAvatar
             src={member.profile.imageUrl}
             name={member.profile.name}
@@ -133,7 +145,10 @@ const ChatItem = ({
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-x-2">
             <div className="flex items-center ">
-              <p className="font-semibold text-sm hover:underline cursor-pointer">
+              <p
+                className="font-semibold text-sm hover:underline cursor-pointer"
+                onClick={onMemberClick}
+              >
                 {member.profile.name}
               </p>
               <ActionTooltip label={member.role}>

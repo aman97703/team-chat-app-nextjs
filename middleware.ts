@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
 
   // If the user is authenticated and trying to access the sign-in page, redirect them
   if (token && isVisitingAuthPage) {
-    return NextResponse.redirect(req.headers.get("referer") || "/");
+    return NextResponse.rewrite(new URL('/', req.url))
   }
 
   // If the user is not authenticated and trying to access a protected page, redirect to login
