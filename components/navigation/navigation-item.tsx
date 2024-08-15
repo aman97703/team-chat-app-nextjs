@@ -12,7 +12,7 @@ interface NatigationItemProps {
 }
 
 const NatigationItem = ({ id, imageUrl, name }: NatigationItemProps) => {
-  const { serverid } = useParams<{ serverid: string }>();
+  const params = useParams<{ serverid: string }>();
   const router = useRouter();
   const onClick = () => {
     router.push(`/server/${id}`);
@@ -24,14 +24,15 @@ const NatigationItem = ({ id, imageUrl, name }: NatigationItemProps) => {
         <div
           className={cn(
             "absolute left-0 bg-primary rounded-r-full transition w-[4px]",
-            serverid !== id && "group-hover:h-[20px]",
-            serverid === id ? "h-[36px]" : "h-2",
+            params?.serverid !== id && "group-hover:h-[20px]",
+            params?.serverid === id ? "h-[36px]" : "h-2"
           )}
         />
         <div
           className={cn(
             "relative group mx-3 flex h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden",
-            serverid === id && "bg-primary/10 text-primary rounded-[16px]"
+            params?.serverid === id &&
+              "bg-primary/10 text-primary rounded-[16px]"
           )}
         >
           <Image fill src={imageUrl} alt="Channel" className="bg-white" />
