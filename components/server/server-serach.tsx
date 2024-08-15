@@ -31,15 +31,15 @@ interface ServerSearchProps {
 const ServerSearch = ({ data }: ServerSearchProps) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { serverid } = useParams<{ serverid: string }>();
+  const params = useParams<{ serverid: string }>();
 
   const handleClick = (id: string, type: datatype) => {
     setOpen(false);
     if (type === "member") {
-      return router.push(`/server/${serverid}/conversations/${id}`);
+      return router.push(`/server/${params?.serverid}/conversations/${id}`);
     }
     if (type === "channel") {
-      return router.push(`/server/${serverid}/channels/${id}`);
+      return router.push(`/server/${params?.serverid}/channels/${id}`);
     }
   };
   //   useEffect(() => {
